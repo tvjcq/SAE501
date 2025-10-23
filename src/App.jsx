@@ -372,6 +372,13 @@ const storyPages = [
 
 // --- Composant principal de l'application ---
 export default function App() {
+  // Helper to prefix public paths with Vite base (works in dev and production)
+  const getPublicUrl = (path) => {
+    // import.meta.env.BASE_URL is set by Vite and equals the `base` option in vite.config.js
+    const base = import.meta.env.BASE_URL || "/";
+    // Ensure no double-slash when base ends with '/'
+    return `${base.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+  };
   const [currentPage, setCurrentPage] = useState(0);
   const currentPageData = storyPages[currentPage];
 
@@ -552,7 +559,7 @@ export default function App() {
           <div className="w-full lg:w-3/5 lg:sticky lg:top-36">
             <div className="relative w-full bg-white rounded-2xl shadow-2xl overflow-hidden aspect-square">
               <img
-                src={currentPageData.imageUrl}
+                src={getPublicUrl(currentPageData.imageUrl)}
                 alt={currentPageData.title}
                 className="absolute inset-0 w-full h-full object-cover"
                 onError={(e) => {
